@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini-Trello</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HEADER: title + "Create New Task" button -->
+  <header class="app-header">
+    <div class="header-left">
+      <svg class="header-logo" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <h1>Mini-Trello</h1>
+    </div>
+    <div class="header-right">
+      <!-- overall progress: average of all task progress values -->
+      <div class="overall-progress">
+        <span class="overall-label">Overall</span>
+        <div class="overall-track"><div class="overall-fill" id="overallFill" style="width:0%"></div></div>
+        <span class="overall-value" id="overallValue">0%</span>
+      </div>
+      <button id="addTaskBtn" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Create New Task
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN BOARD: 3 columns -->
+  <main class="board">
+    <!-- Column 1: To Do (light gray) -->
+    <div class="column todo" data-status="todo">
+      <div class="column-header">
+        <h2>To Do</h2>
+        <span class="badge" id="todoBadge">0</span>
+      </div>
+      <div class="cards" id="todoCards"></div>
+      <div class="empty-state" id="todoEmpty">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="13" y2="13"/></svg>
+        <p>No tasks yet — add one!</p>
+      </div>
+    </div>
+    <!-- Column 2: In Progress (light blue) -->
+    <div class="column in-progress" data-status="in_progress">
+      <div class="column-header">
+        <h2>In Progress</h2>
+        <span class="badge" id="inProgressBadge">0</span>
+      </div>
+      <div class="cards" id="inProgressCards"></div>
+      <div class="empty-state" id="inProgressEmpty">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+        <p>No tasks yet — add one!</p>
+      </div>
+    </div>
+    <!-- Column 3: Done (light green) -->
+    <div class="column done" data-status="done">
+      <div class="column-header">
+        <h2>Done</h2>
+        <span class="badge" id="doneBadge">0</span>
+      </div>
+      <div class="cards" id="doneCards"></div>
+      <div class="empty-state" id="doneEmpty">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <p>No tasks yet — add one!</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: form to create a new task -->
+  <div class="modal-overlay" id="taskModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Create New Task</h2>
+        <button class="modal-close-btn" id="closeModalBtn" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form id="taskForm" novalidate>
+        <div class="form-group">
+          <label for="taskTitle">Title <span class="required">*</span></label>
+          <input id="taskTitle" type="text" placeholder="e.g. Design homepage mockup" autocomplete="off" />
+          <span class="field-error" id="titleError"></span>
+        </div>
+        <div class="form-group">
+          <label for="taskDescription">Description</label>
+          <textarea id="taskDescription" placeholder="Add a short description..." rows="3"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="cancelModalBtn" class="btn-ghost">Cancel</button>
+          <button type="submit" id="saveTaskBtn" class="btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-content modal-confirm">
+      <div class="confirm-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <h2>Delete task?</h2>
+      <p class="confirm-text">This action cannot be undone. The task will be permanently removed.</p>
+      <div class="modal-actions">
+        <button type="button" id="cancelDeleteBtn" class="btn-ghost">Cancel</button>
+        <button type="button" id="confirmDeleteBtn" class="btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- LOADING SKELETONS (shown while fetching) -->
+  <template id="skeletonCard">
+    <div class="card skeleton">
+      <div class="sk-line sk-line-title"></div>
+      <div class="sk-line sk-line-desc"></div>
+      <div class="sk-line sk-line-desc short"></div>
+      <div class="sk-actions">
+        <div class="sk-btn"></div>
+        <div class="sk-btn"></div>
+      </div>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
