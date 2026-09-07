@@ -4,7 +4,7 @@ A full-stack, single-page Kanban board where users create tasks and move them th
 
 Built as a 7th-semester Agile (Scrum) project with a premium UI (glassmorphism, smooth animations, and drag-and-drop) hand-coded in plain CSS + Vanilla JS.
 
-🔗 Live demo: [add your deployed link here, if any]
+🔗 Live demo: [https://mini-trello-2026.onrender.com](https://mini-trello-2026.onrender.com)
 
 ## 👤 Author
 
@@ -38,14 +38,19 @@ project/
 │   ├── server.js          # Express app + all API routes
 │   ├── models/
 │   │   └── Task.js        # Task schema (title, description, status, progress)
+│   ├── public/            # served as static frontend in production
+│   │   ├── index.html
+│   │   ├── style.css
+│   │   └── app.js
 │   ├── package.json
 │   ├── .env.example       # copy to .env and add your MongoDB URI
 │   └── .env               # your MongoDB connection string (not committed)
+├── frontend/
+│   ├── index.html         # page layout (header + 3 columns + modal)
+│   ├── style.css           # premium design system
+│   └── app.js             # board state, drag/drop, API calls
 ├── .gitignore              # keeps node_modules/ and .env out of version control
-└── frontend/
-    ├── index.html         # page layout (header + 3 columns + modal)
-    ├── style.css           # premium design system
-    └── app.js             # board state, drag/drop, API calls
+└── README.md
 ```
 
 ## 📦 API Endpoints
@@ -109,6 +114,56 @@ Open `frontend/index.html` directly in your browser (double-click it, or drag it
 
 Test the API with Postman at `http://localhost:5000/tasks`.
 
+## 🌐 Deploy Online (Free — Render + MongoDB Atlas)
+
+You can host the entire app (backend + frontend) for free on **Render.com** with a **MongoDB Atlas** free database.
+
+### Step 1 — Set up MongoDB Atlas (free)
+
+1. Sign up at https://www.mongodb.com/atlas
+2. Create a free **M0** cluster
+3. Go to **Database Access** → create a username/password
+4. Go to **Network Access** → add IP `0.0.0.0/0` (allow all)
+5. Go to **Database** → click **Connect** → **Connect your application**
+6. Copy the connection string, e.g.:
+   `mongodb+srv://myuser:mypassword@cluster0.xxxxx.mongodb.net/mini-trello`
+
+### Step 2 — Push your code to GitHub
+
+```bash
+git add .
+git commit -m "Ready for deployment"
+git push origin main
+```
+
+### Step 3 — Deploy on Render
+
+1. Sign up at https://render.com (free)
+2. Click **New +** → **Web Service**
+3. Connect your GitHub repo: `Harshil2992005/Trello`
+4. Fill in these settings:
+
+| Field | Value |
+|-------|-------|
+| **Name** | mini-trello |
+| **Root Directory** | `backend` |
+| **Runtime** | Node |
+| **Build Command** | `npm install` |
+| **Start Command** | `node server.js` |
+| **Instance Type** | Free |
+
+5. Go to **Environment** → add this variable:
+
+| Key | Value |
+|-----|-------|
+| `MONGODB_URI` | *(paste your Atlas connection string from Step 1)* |
+
+6. Click **Create Web Service** → wait 2-3 minutes → your app is live!
+
+Your app will be at: `https://mini-trello-xxxx.onrender.com`
+
+> **Note:** Render free tier spins down after 15 minutes of inactivity. First request after idle may take 30-50 seconds to wake up.
+
 ## 🧪 Testing with Postman
 
 - `GET  http://localhost:5000/tasks` → get all tasks
@@ -119,5 +174,5 @@ Test the API with Postman at `http://localhost:5000/tasks`.
 
 ## 📓 Notes
 
-- Do not commit `node_modules/` in your zip submission
+-
 - Just submit the source code (backend + frontend + this README)

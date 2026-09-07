@@ -8,20 +8,21 @@
 //   DELETE /tasks/:id   -> delete a task
 // =============================================
 
-const express = require("express");    // web framework (makes the server)
-const mongoose = require("mongoose");  // library to connect MongoDB
-const cors = require("cors");          // lets the browser frontend call this server
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const path = require("path");
 
-require("dotenv").config();            // loads backend/.env if it exists
+require("dotenv").config();
 
-const Task = require("./models/Task"); // our Task model
+const Task = require("./models/Task");
 
-const app = express();                 // create the express app
-const PORT = process.env.PORT || 5000; // backend runs on this port
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-// ---------- Middleware (runs before every request) ----------
-app.use(cors());                       // allow requests from any browser
-app.use(express.json());               // understand JSON data sent by frontend
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 // ---------- MongoDB connection ----------
 // The connection string lives in backend/.env (MONGODB_URI).
@@ -36,23 +37,29 @@ mongoose
 
 // ---------- API ROUTES ----------
 
-// 1) GET /tasks -> return all tasks, oldest first
+// 1) GET /tasks -> return all tasks, newest first
 app.get("/tasks", async (req, res) => {
   try {
-    const tasks = await Task.find().sort({ createdAt: 1 });
+    const tasks = await Task.find().sort({ createdAt: -1 });
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// 2) POST /tasks -> create a new task (title is required)
+// 2) POST /tasks -> create a new task (title + createdBy required)
 app.post("/tasks", async (req, res) => {
   try {
     // server-side validation: title must not be empty
     const title = (req.body.title || "").trim();
     if (!title) {
       return res.status(400).json({ error: "Title is required" });
+    }
+
+    // server-side validation: createdBy (who created the task) must not be empty
+    const createdBy = (req.body.createdBy || "").trim();
+    if (!createdBy) {
+      return res.status(400).json({ error: "createdBy is required" });
     }
 
     const status = req.body.status || "todo";
@@ -63,7 +70,8 @@ app.post("/tasks", async (req, res) => {
     const task = new Task({
       title,                                  // trimmed title
       description: req.body.description || "",
-      status
+      status,
+      createdBy
     });
 
     const savedTask = await task.save();     // save to MongoDB
@@ -160,17 +168,9 @@ app.delete("/tasks/:id", async (req, res) => {
   }
 });
 
-// ---------- Root route (friendly message in browser/Postman) ----------
+// ---------- Root route (serves the frontend) ----------
 app.get("/", (req, res) => {
-  res.json({
-    name: "Mini-Trello API",
-    endpoints: [
-      "GET /tasks",
-      "POST /tasks",
-      "PATCH /tasks/:id",
-      "DELETE /tasks/:id"
-    ]
-  });
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // ---------- 404 handler for unknown routes ----------

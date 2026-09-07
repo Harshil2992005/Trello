@@ -33,6 +33,12 @@ const taskSchema = new mongoose.Schema(
       min: 0,
       max: 100,
       default: 0
+    },
+    // name of the person who created the task (no login system)
+    createdBy: {
+      type: String,
+      required: [true, "createdBy is required"],
+      trim: true
     }
   },
   {
