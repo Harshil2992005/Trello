@@ -4,7 +4,7 @@ A full-stack, single-page Kanban board where users create tasks and move them th
 
 Built as a 7th-semester Agile (Scrum) project with a premium UI (glassmorphism, smooth animations, and drag-and-drop) hand-coded in plain CSS + Vanilla JS.
 
-🔗 Live demo: [https://mini-trello-2026.onrender.com](https://mini-trello-2026.onrender.com)
+🔗 Live demo: [https://trello-1-848v.onrender.com](https://trello-1-848v.onrender.com)
 
 ## 👤 Author
 
@@ -18,8 +18,11 @@ Built as a 7th-semester Agile (Scrum) project with a premium UI (glassmorphism, 
 - Delete tasks with a confirmation dialog
 - Per-task **progress percentage** slider (visible on In Progress cards) — synced automatically to 0% on To Do and 100% on Done
 - Live overall progress indicator in the header (average progress across all tasks)
-- Click a card to open a read-only view with the full title/description
+- **Board / Table view toggle** — switch between Kanban board and numbered task table
+- **Dark / Light mode toggle** — theme switcher with localStorage persistence
+- First-visit **name prompt** with avatar system (deterministic color from name hash)
 - Empty-state messages and loading skeleton on page load
+- Toast notifications for success/error feedback
 - Responsive layout for mobile
 
 ## 🧱 Tech Stack

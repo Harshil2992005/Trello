@@ -24,6 +24,22 @@
         <div class="overall-track"><div class="overall-fill" id="overallFill" style="width:0%"></div></div>
         <span class="overall-value" id="overallValue">0%</span>
       </div>
+      <!-- Theme Toggle: Light / Dark -->
+      <button class="theme-toggle" id="themeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <!-- View Toggle: Board | Table -->
+      <div class="view-toggle" id="viewToggle">
+        <button class="view-btn active" id="boardViewBtn" title="Board View">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          Board
+        </button>
+        <button class="view-btn" id="tableViewBtn" title="Table View">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          Table
+        </button>
+      </div>
       <button id="addTaskBtn" class="btn-primary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Create New Task
@@ -70,6 +86,36 @@
       </div>
     </div>
   </main>
+
+  <!-- TABLE VIEW: numbered task list -->
+  <section class="table-view" id="taskTableView" style="display:none;">
+    <div class="table-wrapper">
+      <div class="table-header-row">
+        <h2>All Tasks</h2>
+        <span class="table-count" id="tableCount">0 tasks</span>
+      </div>
+      <div class="table-scroll">
+        <table class="task-table" id="taskTable">
+          <thead>
+            <tr>
+              <th class="col-num">#</th>
+              <th class="col-title">Title</th>
+              <th class="col-desc">Description</th>
+              <th class="col-status">Status</th>
+              <th class="col-by">Created By</th>
+              <th class="col-date">Date</th>
+            </tr>
+          </thead>
+          <tbody id="taskTableBody">
+          </tbody>
+        </table>
+      </div>
+      <div class="table-empty" id="tableEmpty">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <p>No tasks yet — create one to get started!</p>
+      </div>
+    </div>
+  </section>
 
   <!-- MODAL: form to create a new task -->
   <div class="modal-overlay" id="taskModal">

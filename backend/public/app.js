@@ -46,6 +46,40 @@ const emptyStates = {
   done: document.getElementById("doneEmpty")
 };
 
+// View toggle references
+const boardViewBtn = document.getElementById("boardViewBtn");
+const tableViewBtn = document.getElementById("tableViewBtn");
+const boardSection = document.querySelector(".board");
+const tableSection = document.getElementById("taskTableView");
+const taskTableBody = document.getElementById("taskTableBody");
+const tableEmpty = document.getElementById("tableEmpty");
+const tableCount = document.getElementById("tableCount");
+let currentView = "board"; // "board" or "table"
+
+// ---------- THEME TOGGLE (Light / Dark) ----------
+const themeToggle = document.getElementById("themeToggle");
+
+function getStoredTheme() {
+  return localStorage.getItem("mtTheme");
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("mtTheme", theme);
+}
+
+// Apply saved theme immediately (before first paint to avoid flash)
+var savedTheme = getStoredTheme();
+if (savedTheme) {
+  applyTheme(savedTheme);
+}
+
+themeToggle.addEventListener("click", function () {
+  var current = document.documentElement.getAttribute("data-theme");
+  var next = current === "dark" ? "light" : "dark";
+  applyTheme(next);
+});
+
 let pendingDeleteId = null;
 // task ids whose slider is being dragged right now
 // (protected from being re-built by unrelated re-renders)
@@ -332,6 +366,7 @@ async function loadTasks() {
     return;
   }
   renderBoard(tasks);
+  cachedTasks = tasks;
 }
 
 // Render the board from a tasks array (shared by loadTasks + polls)
@@ -384,6 +419,105 @@ function renderBoard(tasks) {
   lastPollSignature = tasks.map(function (t) {
     return t._id + "|" + t.status + "|" + t.progress + "|" + t.title + "|" + t.createdBy + "|" + t.createdAt;
   }).join("~");
+
+  // also update table if it's visible
+  if (currentView === "table") {
+    renderTable(tasks);
+  }
+}
+
+// ---------- VIEW TOGGLE (Board / Table) ----------
+boardViewBtn.addEventListener("click", function () {
+  if (currentView === "board") return;
+  currentView = "board";
+  boardViewBtn.classList.add("active");
+  tableViewBtn.classList.remove("active");
+  boardSection.style.display = "";
+  tableSection.style.display = "none";
+});
+
+tableViewBtn.addEventListener("click", function () {
+  if (currentView === "table") return;
+  currentView = "table";
+  tableViewBtn.classList.add("active");
+  boardViewBtn.classList.remove("active");
+  boardSection.style.display = "none";
+  tableSection.style.display = "";
+  // render table with current data
+  renderTableFromCache();
+});
+
+// Store tasks cache for table view
+var cachedTasks = [];
+
+function renderTableFromCache() {
+  renderTable(cachedTasks);
+}
+
+// ---------- RENDER TABLE ----------
+function renderTable(tasks) {
+  cachedTasks = tasks || [];
+  taskTableBody.innerHTML = "";
+
+  if (cachedTasks.length === 0) {
+    tableEmpty.classList.add("visible");
+    tableCount.textContent = "0 tasks";
+    return;
+  }
+
+  tableEmpty.classList.remove("visible");
+  tableCount.textContent = cachedTasks.length + " task" + (cachedTasks.length !== 1 ? "s" : "");
+
+  var statusLabels = {
+    todo: "To Do",
+    in_progress: "In Progress",
+    done: "Done"
+  };
+
+  cachedTasks.forEach(function (task, index) {
+    var tr = document.createElement("tr");
+
+    // #
+    var tdNum = document.createElement("td");
+    tdNum.className = "col-num";
+    tdNum.textContent = index + 1;
+    tr.appendChild(tdNum);
+
+    // Title
+    var tdTitle = document.createElement("td");
+    tdTitle.className = "col-title";
+    tdTitle.textContent = task.title;
+    tr.appendChild(tdTitle);
+
+    // Description
+    var tdDesc = document.createElement("td");
+    tdDesc.className = "col-desc";
+    tdDesc.textContent = task.description || "—";
+    tr.appendChild(tdDesc);
+
+    // Status badge
+    var tdStatus = document.createElement("td");
+    tdStatus.className = "col-status";
+    var badge = document.createElement("span");
+    badge.className = "status-badge status-" + task.status;
+    badge.textContent = statusLabels[task.status] || task.status;
+    tdStatus.appendChild(badge);
+    tr.appendChild(tdStatus);
+
+    // Created By
+    var tdBy = document.createElement("td");
+    tdBy.className = "col-by";
+    tdBy.textContent = task.createdBy || "Unknown";
+    tr.appendChild(tdBy);
+
+    // Date
+    var tdDate = document.createElement("td");
+    tdDate.className = "col-date";
+    tdDate.textContent = formatShortDate(task.createdAt);
+    tr.appendChild(tdDate);
+
+    taskTableBody.appendChild(tr);
+  });
 }
 
 // ---------- DRAG & DROP ----------
