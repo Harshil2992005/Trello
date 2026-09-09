@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mini-Trello Kanban Board — Project Report</title>
+<style>
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.25;
+    color: #000000;
+    margin: 40px auto;
+    max-width: 850px;
+  }
+  h1 {
+    font-size: 22pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+  h2 {
+    font-size: 15pt;
+    font-weight: bold;
+    border-bottom: 1.5px solid #333333;
+    padding-bottom: 4px;
+    margin-top: 30px;
+    margin-bottom: 14px;
+  }
+  h3 {
+    font-size: 13pt;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+  p {
+    font-size: 12pt;
+    text-align: justify;
+    margin-bottom: 10px;
+  }
+  ul, ol {
+    margin-top: 6px;
+    margin-bottom: 14px;
+    padding-left: 28px;
+  }
+  li {
+    font-size: 12pt;
+    margin-bottom: 5px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    margin-bottom: 20px;
+    font-size: 11pt;
+  }
+  th, td {
+    border: 1px solid #444444;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  tr:nth-child(even) td {
+    background-color: #fafafa;
+  }
+  pre, code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10pt;
+    background-color: #f7f7f7;
+  }
+  pre {
+    border: 1px solid #cccccc;
+    padding: 10px;
+    overflow-x: auto;
+    line-height: 1.2;
+    margin: 12px 0;
+  }
+  .info-table {
+    width: 80%;
+    margin: 0 auto 30px auto;
+  }
+  .info-table td {
+    padding: 6px 12px;
+  }
+  .info-table td:first-child {
+    font-weight: bold;
+    width: 35%;
+  }
+  .note {
+    font-style: italic;
+    background-color: #f9f9f9;
+    border-left: 3px solid #555555;
+    padding: 8px 12px;
+    margin: 12px 0;
+  }
+  .signature-section {
+    margin-top: 36px;
+    font-size: 12pt;
+  }
+</style>
+</head>
+<body>
+
+<h1>Mini-Trello Kanban Board<br><span style="font-size: 16pt; font-weight: normal;">Task Management Application — Project Report</span></h1>
+
+<table class="info-table">
+  <tr>
+    <td>Project</td>
+    <td>Mini-Trello Kanban Board</td>
+  </tr>
+  <tr>
+    <td>Student Name</td>
+    <td>Harshilkumar</td>
+  </tr>
+  <tr>
+    <td>Enrollment Number</td>
+    <td>(fill your enrollment number)</td>
+  </tr>
+  <tr>
+    <td>Team</td>
+    <td>Individual</td>
+  </tr>
+  <tr>
+    <td>Semester</td>
+    <td>7th Semester</td>
+  </tr>
+  <tr>
+    <td>Methodology</td>
+    <td>Agile / Scrum (two one-week sprints)</td>
+  </tr>
+</table>
+
+<h2>1. Project Overview</h2>
+<p>
+  Mini-Trello is a simple, modern, responsive single-page Kanban task-management application. A user can create tasks, view them grouped into three status columns (To Do, In Progress, Done), move tasks between columns with Next/Previous controls or drag-and-drop, and delete tasks. All data is stored in a real database and every action goes through a RESTful API, ensuring the board state persists across browser refreshes.
+</p>
+<p>
+  The project was developed to practice full-stack web engineering: a Vanilla JavaScript frontend, a Node.js + Express backend, and a NoSQL database (MongoDB), while applying Agile/Scrum execution across two one-week sprints.
+</p>
+<p><strong>Live Demo URL:</strong> https://trello-1-848v.onrender.com</p>
+
+<h2>2. Objectives</h2>
+<ul>
+  <li>Build a task-management board with three status columns and full create/move/delete lifecycle flows.</li>
+  <li>Implement a robust RESTful API (GET, POST, PATCH, DELETE) exchanging JSON payloads.</li>
+  <li>Store task records in a persistent database across server and container restarts.</li>
+  <li>Integrate a Vanilla JS frontend client with a Node.js + Express backend via HTTP.</li>
+  <li>Add per-task progress tracking with automatic synchronization on status change.</li>
+  <li>Implement native HTML5 drag-and-drop mechanics for interactive task re-assignment.</li>
+  <li>Provide a Board/Table view toggle for seamless switching between Kanban and tabular layouts.</li>
+  <li>Support a Dark/Light theme toggle with persistent storage via <code>localStorage</code>.</li>
+  <li>Execute project milestones using Agile/Scrum methodology over two one-week sprints.</li>
+</ul>
+
+<h2>3. Technology Stack</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 25%;">Layer</th>
+      <th style="width: 75%;">Technology &amp; Tools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Frontend</td>
+      <td>HTML5, CSS3 (custom properties / design tokens), Vanilla JavaScript (<code>fetch()</code> API)</td>
+    </tr>
+    <tr>
+      <td>Backend</td>
+      <td>Node.js v18+, Express 4.19, CORS middleware, dotenv</td>
+    </tr>
+    <tr>
+      <td>Database</td>
+      <td>MongoDB 8.x (via Mongoose ODM)</td>
+    </tr>
+    <tr>
+      <td>UI / Theming</td>
+      <td>Glassmorphism design system, Indigo accent palette, smooth CSS animations</td>
+    </tr>
+    <tr>
+      <td>API Style</td>
+      <td>RESTful Architecture, JSON in/out</td>
+    </tr>
+    <tr>
+      <td>Hosting</td>
+      <td>Render.com (free tier) + MongoDB Atlas (free M0 cluster)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>4. System Architecture</h2>
+<p>The system follows a decoupled single-page client-server model:</p>
+<pre>
+Browser (Single-Page App)
+  │ fetch() / XMLHttpRequest
+  ▼
+Express REST API (server.js — port 5000)
+  │ Mongoose ODM (parameterized queries)
+  ▼
+MongoDB Database (tasks collection)
+</pre>
+
+<h3>Detailed Architectural Flow</h3>
+<pre>
+Browser (HTML + CSS + Vanilla JS)
+  index.html + style.css + app.js
+        │
+        │  fetch("/tasks")    fetch("/tasks", {method:"POST"})
+        ▼                     ▼
+  ┌─────────────────────────────────────────┐
+  │  Express.js Server (server.js)          │
+  │  - CORS enabled                         │
+  │  - JSON body parsing                    │
+  │  - Static file serving (public/)        │
+  │  - Input validation & error handling    │
+  │  - Graceful shutdown handler            │
+  └─────────────────────────────────────────┘
+        │
+        │  Mongoose Schema + Model
+        ▼
+  ┌─────────────────────────────────────────┐
+  │  MongoDB Database                       │
+  │  Collection: tasks                      │
+  │  Fields: title, description, status,    │
+  │          progress, createdBy,           │
+  │          createdAt, updatedAt           │
+  └─────────────────────────────────────────┘
+</pre>
+
+<h2>5. Database Design</h2>
+<p>The application persists records in a single <code>tasks</code> collection within MongoDB:</p>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 18%;">Field</th>
+      <th style="width: 20%;">Type</th>
+      <th style="width: 62%;">Description &amp; Constraints</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>_id</code></td>
+      <td>ObjectId (PK)</td>
+      <td>Auto-generated unique task identifier.</td>
+    </tr>
+    <tr>
+      <td><code>title</code></td>
+      <td>String</td>
+      <td>Required, trimmed string representing the task summary.</td>
+    </tr>
+    <tr>
+      <td><code>description</code></td>
+      <td>String</td>
+      <td>Optional, defaults to empty string, trimmed.</td>
+    </tr>
+    <tr>
+      <td><code>status</code></td>
+      <td>String (Enum)</td>
+      <td>Restricted to <code>todo</code>, <code>in_progress</code>, or <code>done</code>.</td>
+    </tr>
+    <tr>
+      <td><code>progress</code></td>
+      <td>Number</td>
+      <td>Range: 0–100; auto-synced with status changes (todo=0, done=100).</td>
+    </tr>
+    <tr>
+      <td><code>createdBy</code></td>
+      <td>String</td>
+      <td>Required; name of the creator captured during first session.</td>
+    </tr>
+    <tr>
+      <td><code>createdAt</code></td>
+      <td>DateTime</td>
+      <td>Timestamp auto-generated via Mongoose <code>timestamps: true</code>.</td>
+    </tr>
+    <tr>
+      <td><code>updatedAt</code></td>
+      <td>DateTime</td>
+      <td>Timestamp automatically updated upon document mutation.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Schema Definition (Task.js)</h3>
+<pre>
+const taskSchema = new mongoose.Schema(
+  {
+    title:       { type: String, required: [true, "Title is required"], trim: true },
+    description: { type: String, default: "", trim: true },
+    status:      { type: String, enum: ["todo", "in_progress", "done"], default: "todo" },
+    progress:    { type: Number, min: 0, max: 100, default: 0 },
+    createdBy:   { type: String, required: [true, "createdBy is required"], trim: true }
+  },
+  { timestamps: true }
+);
+</pre>
+
+<h2>6. UI Design &amp; Theming</h2>
+<p>
+  The interface implements an indigo-centered design system. CSS custom properties (design tokens) are declared centrally within <code>frontend/style.css</code> to ensure modular visual management:
+</p>
+<ul>
+  <li><strong>Primary Accent:</strong> Indigo (<code>#6366f1</code>) paired with deep hover state (<code>#4f46e5</code>).</li>
+  <li><strong>Canvas Background:</strong> Soft slate (<code>#f8fafc</code>) supporting elevated white card surfaces.</li>
+  <li><strong>Column Palettes:</strong> Subtle tints — To Do (<code>#f1f5f0</code>), In Progress (<code>#e8f0fe</code>), Done (<code>#e6f7e6</code>).</li>
+  <li><strong>Status Indicators:</strong> Left border color accents matching status progression.</li>
+  <li><strong>Glassmorphism Header:</strong> <code>backdrop-filter: blur(12px)</code> layered with semi-transparent alphas.</li>
+  <li><strong>Typography:</strong> Google Fonts "Inter" (400, 500, 600, 700 weights).</li>
+  <li><strong>Shadow Hierarchy:</strong> 4-tier elevation tokens (sm, md, lg, lift) providing depth separation.</li>
+  <li><strong>Micro-Interactions:</strong> Modal popups, toast notifications, skeleton loaders, and card lifts.</li>
+  <li><strong>Dynamic Theming:</strong> Toggle between light and slate-navy dark mode (<code>#0f172a</code>) with instant state restoration from <code>localStorage</code> before first paint.</li>
+</ul>
+
+<h2>7. User Stories &amp; Product Backlog</h2>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 10%;">ID</th>
+      <th style="width: 58%;">User Story Description</th>
+      <th style="width: 16%;">Priority</th>
+      <th style="width: 16%;">Story Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>US1</td>
+      <td>Create a new task via animated modal form</td>
+      <td>High</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>US2</td>
+      <td>View all tasks categorized into 3 status columns</td>
+      <td>High</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>US3</td>
+      <td>Move tasks between To Do → In Progress → Done</td>
+      <td>High</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>US4</td>
+      <td>Delete tasks with safety confirmation dialogue</td>
+      <td>Medium</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>US5</td>
+      <td>Track granular per-task progress percentages</td>
+      <td>Medium</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>US6</td>
+      <td>Drag-and-drop tasks directly across board columns</td>
+      <td>Medium</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>US7</td>
+      <td>Live overall sprint progress bar in the top navigation bar</td>
+      <td>Low</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>US8</td>
+      <td>First-visit user registration prompt with initials avatar</td>
+      <td>Low</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>US9</td>
+      <td>Toast feedback system for asynchronous actions</td>
+      <td>Low</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>US10</td>
+      <td>Switch between Kanban Board and Table View modes</td>
+      <td>Medium</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>US11</td>
+      <td>Toggle Dark and Light interface themes with persistence</td>
+      <td>Medium</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Total Backlog Estimation:</strong> 33 Story Points (Sprint 1: 9 points | Sprint 2: 24 points).</p>
+
+<h2>8. Sprint 1 — Foundation &amp; Setup</h2>
+<p><strong>Sprint Goal:</strong> Build database schema, core REST endpoints, and basic UI task creation flow.</p>
+<ul>
+  <li>Designed MongoDB collection schemas and integrated Mongoose ODM models.</li>
+  <li>Implemented and verified backend routes: <code>GET /tasks</code> and <code>POST /tasks</code>.</li>
+  <li>Implemented server-side validation rejecting missing titles or invalid statuses.</li>
+  <li>Constructed foundational HTML layout, design tokens, and CSS Kanban grid.</li>
+  <li>Built task creation modal with real-time field validation and toast notifications.</li>
+  <li>Structured clean repository separation: <code>backend/</code>, <code>frontend/</code>, and <code>backend/public/</code>.</li>
+</ul>
+
+<h2>9. Sprint 2 — Integration &amp; Delivery</h2>
+<p><strong>Sprint Goal:</strong> Complete state transitions, native drag-and-drop, multi-view presentation, and production deployment.</p>
+<ul>
+  <li>Constructed <code>PATCH /tasks/:id</code> with smart auto-sync logic and <code>DELETE /tasks/:id</code> handling.</li>
+  <li>Engineered native HTML5 drag-and-drop event pipeline without external libraries.</li>
+  <li>Added debounced range sliders (300ms) with an <code>activeSliders</code> set to prevent re-render collisions.</li>
+  <li>Implemented 5-second polling synchronization with content signature comparison.</li>
+  <li>Developed Board/Table view modes and completed the Dark/Light CSS engine.</li>
+  <li>Deployed containerized backend and frontend to Render.com with MongoDB Atlas connectivity.</li>
+</ul>
+
+<h2>10. REST API Documentation</h2>
+<p><strong>Base Endpoint:</strong> <code>https://trello-1-848v.onrender.com</code></p>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 14%;">Method</th>
+      <th style="width: 22%;">Route</th>
+      <th style="width: 44%;">Purpose</th>
+      <th style="width: 20%;">Status Codes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>GET</code></td>
+      <td><code>/tasks</code></td>
+      <td>Fetch all tasks ordered newest first</td>
+      <td>200 OK</td>
+    </tr>
+    <tr>
+      <td><code>POST</code></td>
+      <td><code>/tasks</code></td>
+      <td>Create a new task record</td>
+      <td>201 Created, 400</td>
+    </tr>
+    <tr>
+      <td><code>PATCH</code></td>
+      <td><code>/tasks/:id</code></td>
+      <td>Update fields (status, progress, title)</td>
+      <td>200 OK, 400, 404</td>
+    </tr>
+    <tr>
+      <td><code>DELETE</code></td>
+      <td><code>/tasks/:id</code></td>
+      <td>Permanently remove a task</td>
+      <td>200 OK, 404</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Sample POST Request</h3>
+<pre>
+POST /tasks
+Content-Type: application/json
+
+{
+  "title": "Design Database Schema",
+  "description": "Create ER diagram for the task tables.",
+  "createdBy": "Harshil"
+}
+</pre>
+
+<h3>Sample POST Response (201 Created)</h3>
+<pre>
+{
+  "_id": "655f001122abc...",
+  "title": "Design Database Schema",
+  "description": "Create ER diagram for the task tables.",
+  "status": "todo",
+  "progress": 0,
+  "createdBy": "Harshil",
+  "createdAt": "2026-09-01T10:30:00.000Z",
+  "updatedAt": "2026-09-01T10:30:00.000Z"
+}
+</pre>
+
+<h2>11. Key Features (Detailed Breakdown)</h2>
+<ul>
+  <li><strong>Task Creation:</strong> Scale-in animated modal with field validation and client-side error handling.</li>
+  <li><strong>Task Movement:</strong> Bi-directional column transitions with optimistic updates and failure rollback.</li>
+  <li><strong>Native Drag &amp; Drop:</strong> Native browser drag events triggering status update APIs on drop.</li>
+  <li><strong>Progress Tracking:</strong> In-card progress slider for "In Progress" items, synchronized with header aggregate.</li>
+  <li><strong>Safe Deletion:</strong> Dual-action confirmation dialog preventing accidental data loss.</li>
+  <li><strong>Live Polling Engine:</strong> 5-second polling with signature hashing to eliminate unnecessary DOM redraws.</li>
+  <li><strong>Personalized Avatars:</strong> Deterministic avatar color generation using creator name hash codes.</li>
+  <li><strong>Dual Display Views:</strong> Switch between 3-column Kanban and numbered tabular listing.</li>
+  <li><strong>Theme Persistence:</strong> Seamless theme toggling without flash of unstyled content (FOUC).</li>
+</ul>
+
+<h2>12. Verification &amp; Testing</h2>
+
+<h3>12.1 Backend API Verification</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 8%;">#</th>
+      <th style="width: 32%;">Test Scenario</th>
+      <th style="width: 32%;">Input Payload / Action</th>
+      <th style="width: 18%;">Expected Response</th>
+      <th style="width: 10%;">Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Fetch initial records</td>
+      <td>GET /tasks</td>
+      <td>200 OK (<code>[]</code>)</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Create valid task</td>
+      <td>POST /tasks with title + createdBy</td>
+      <td>201 Created</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Reject blank title</td>
+      <td>POST /tasks with title=""</td>
+      <td>400 Bad Request</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Reject missing creator</td>
+      <td>POST /tasks without createdBy</td>
+      <td>400 Bad Request</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Reject invalid status</td>
+      <td>POST /tasks with status="review"</td>
+      <td>400 Bad Request</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Transition to In Progress</td>
+      <td>PATCH /tasks/:id (status="in_progress")</td>
+      <td>200 OK</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Transition to Done</td>
+      <td>PATCH /tasks/:id (status="done")</td>
+      <td>200 OK (progress=100)</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Transition to To Do</td>
+      <td>PATCH /tasks/:id (status="todo")</td>
+      <td>200 OK (progress=0)</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Update progress slider</td>
+      <td>PATCH /tasks/:id (progress=65)</td>
+      <td>200 OK</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Progress range upper bound</td>
+      <td>PATCH /tasks/:id (progress=150)</td>
+      <td>400 Bad Request</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Progress range lower bound</td>
+      <td>PATCH /tasks/:id (progress=-5)</td>
+      <td>400 Bad Request</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Invalid status payload</td>
+      <td>PATCH /tasks/:id (status="xyz")</td>
+      <td>400 Bad Request</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Update non-existent ID</td>
+      <td>PATCH /tasks/99999</td>
+      <td>404 Not Found</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Malformed ObjectId update</td>
+      <td>PATCH /tasks/abc123</td>
+      <td>400 Bad Request</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>Delete valid record</td>
+      <td>DELETE /tasks/:id</td>
+      <td>200 OK</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>Delete missing record</td>
+      <td>DELETE /tasks/99999</td>
+      <td>404 Not Found</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>Malformed ObjectId delete</td>
+      <td>DELETE /tasks/abc123</td>
+      <td>400 Bad Request</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>Full entity lifecycle</td>
+      <td>POST → PATCH → DELETE flow</td>
+      <td>201 / 200 persistence</td>
+      <td>Pass</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>12.2 User Interface &amp; E2E Testing</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 8%;">#</th>
+      <th style="width: 42%;">Test Case</th>
+      <th style="width: 40%;">Expected Behavior</th>
+      <th style="width: 10%;">Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>Initial skeleton rendering</td><td>Skeleton shimmer placeholders visible during load</td><td>Pass</td></tr>
+    <tr><td>2</td><td>First-time visitor prompt</td><td>Name modal displays without backdrop dismiss</td><td>Pass</td></tr>
+    <tr><td>3</td><td>User name persistence</td><td>Name saved in localStorage; suppresses modal on reload</td><td>Pass</td></tr>
+    <tr><td>4</td><td>Create task flow</td><td>Created item renders inside To Do column</td><td>Pass</td></tr>
+    <tr><td>5</td><td>Input validation message</td><td>Inline notification appears when title field is blank</td><td>Pass</td></tr>
+    <tr><td>6</td><td>Button forward move</td><td>Task transitions to subsequent status column</td><td>Pass</td></tr>
+    <tr><td>7</td><td>Button backward move</td><td>Task returns to previous status column</td><td>Pass</td></tr>
+    <tr><td>8</td><td>Drag To Do → In Progress</td><td>Item relocates and updates status in MongoDB</td><td>Pass</td></tr>
+    <tr><td>9</td><td>Drag In Progress → Done</td><td>Item relocates and progress auto-fills to 100%</td><td>Pass</td></tr>
+    <tr><td>10</td><td>Drag Done → To Do</td><td>Item relocates and progress auto-resets to 0%</td><td>Pass</td></tr>
+    <tr><td>11</td><td>Progress bar on In Progress</td><td>Slider renders and debounces updates successfully</td><td>Pass</td></tr>
+    <tr><td>12</td><td>Progress bar hidden on To Do</td><td>Slider is excluded from card DOM</td><td>Pass</td></tr>
+    <tr><td>13</td><td>Progress bar hidden on Done</td><td>Slider is excluded from card DOM</td><td>Pass</td></tr>
+    <tr><td>14</td><td>Delete modal trigger</td><td>Warning modal opens with action options</td><td>Pass</td></tr>
+    <tr><td>15</td><td>Cancel deletion</td><td>Dialogue closes; task remains unaltered</td><td>Pass</td></tr>
+    <tr><td>16</td><td>Confirm deletion</td><td>Task removed; confirmation toast presented</td><td>Pass</td></tr>
+    <tr><td>17</td><td>Sprint progress indicator</td><td>Top bar updates to reflect average task progress</td><td>Pass</td></tr>
+    <tr><td>18</td><td>Column counters</td><td>Header badges match visible card counts</td><td>Pass</td></tr>
+    <tr><td>19</td><td>Empty board visual</td><td>Empty-state icon displays when columns have no items</td><td>Pass</td></tr>
+    <tr><td>20</td><td>Toast auto-dismiss</td><td>Toast dismisses automatically after 2.8 seconds</td><td>Pass</td></tr>
+    <tr><td>21</td><td>Refresh persistence</td><td>Data state remains intact after browser reload</td><td>Pass</td></tr>
+    <tr><td>22</td><td>Mobile viewport layout</td><td>Columns stack vertically on widths below 768px</td><td>Pass</td></tr>
+    <tr><td>23</td><td>Escape key listener</td><td>Active modal dismisses on Esc keydown</td><td>Pass</td></tr>
+    <tr><td>24</td><td>Overlay click dismiss</td><td>Task creation modal dismisses on backdrop click</td><td>Pass</td></tr>
+    <tr><td>25</td><td>Table view switch</td><td>Kanban board is hidden; numbered table is displayed</td><td>Pass</td></tr>
+    <tr><td>26</td><td>Board view switch</td><td>Table view is hidden; Kanban board is restored</td><td>Pass</td></tr>
+    <tr><td>27</td><td>Table row indexing</td><td>Index column auto-increments correctly (1, 2, 3...)</td><td>Pass</td></tr>
+    <tr><td>28</td><td>Table status badges</td><td>Status chips render matching category colors</td><td>Pass</td></tr>
+    <tr><td>29</td><td>Table empty placeholder</td><td>Empty-state notice shows if collection has no tasks</td><td>Pass</td></tr>
+    <tr><td>30</td><td>Switch to dark mode</td><td>Theme tokens shift to slate-navy palette</td><td>Pass</td></tr>
+    <tr><td>31</td><td>Switch to light mode</td><td>Theme tokens shift to clean white palette</td><td>Pass</td></tr>
+    <tr><td>32</td><td>Theme persistence</td><td>Applied theme persists across browser restarts</td><td>Pass</td></tr>
+    <tr><td>33</td><td>Dark badge contrast</td><td>Status badges remain readable with dark theme colors</td><td>Pass</td></tr>
+    <tr><td>34</td><td>Dark modal backdrop</td><td>Modal backdrop opacity increases in dark theme</td><td>Pass</td></tr>
+  </tbody>
+</table>
+
+<h2>13. Screenshots Reference</h2>
+<p>Screenshots captured from the live instance: <em>https://trello-1-848v.onrender.com</em></p>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 15%;">Figure</th>
+      <th style="width: 45%;">UI Component / Feature</th>
+      <th style="width: 40%;">Capture Guidance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Figure 1</td><td>Main Kanban Board Overview</td><td>Populate 3-4 tasks distributed across columns</td></tr>
+    <tr><td>Figure 2</td><td>Task Creation Modal (Blank)</td><td>Open task modal prior to typing</td></tr>
+    <tr><td>Figure 3</td><td>Validation Error States</td><td>Attempt submit with blank required fields</td></tr>
+    <tr><td>Figure 4</td><td>First-Visit Name Registration</td><td>Open app in private window with fresh storage</td></tr>
+    <tr><td>Figure 5</td><td>Card in To Do Column</td><td>Show card with avatar and action buttons</td></tr>
+    <tr><td>Figure 6</td><td>Card in In Progress Column</td><td>Display active card with progress slider at ~50%</td></tr>
+    <tr><td>Figure 7</td><td>Card in Done Column</td><td>Display card with green border indicator</td></tr>
+    <tr><td>Figure 8</td><td>Delete Confirmation Dialogue</td><td>Click trash icon to display confirmation warning</td></tr>
+    <tr><td>Figure 9</td><td>Header Sprint Progress Bar</td><td>Header state displaying aggregate progress fill</td></tr>
+    <tr><td>Figure 10</td><td>HTML5 Drag &amp; Drop Action</td><td>Capture drag state over highlighted column zone</td></tr>
+    <tr><td>Figure 11</td><td>Toast Notification Popup</td><td>Capture green success notification after save</td></tr>
+    <tr><td>Figure 12</td><td>Empty Board State</td><td>Clean board showing empty column placeholders</td></tr>
+    <tr><td>Figure 13</td><td>Mobile Viewport Representation</td><td>DevTools mobile view at 375px viewport width</td></tr>
+    <tr><td>Figure 14</td><td>Skeleton Shimmer Loading</td><td>Capture loading placeholders during API fetch</td></tr>
+    <tr><td>Figure 15</td><td>Network Tab API Inspection</td><td>DevTools Network tab showing 200/201 requests</td></tr>
+    <tr><td>Figure 16</td><td>Tabular Task View</td><td>Switch to Table view with numbered rows</td></tr>
+    <tr><td>Figure 17</td><td>Dark Theme Board View</td><td>Kanban board rendered in dark slate styling</td></tr>
+    <tr><td>Figure 18</td><td>Dark Theme Table View</td><td>Table mode rendered in dark slate styling</td></tr>
+    <tr><td>Figure 19</td><td>Header Layout &amp; View Toggles</td><td>Header showing view switchers and theme buttons</td></tr>
+  </tbody>
+</table>
+
+<h2>14. Project Structure &amp; Code Metrics</h2>
+<pre>
+trello/
+├── backend/
+│   ├── server.js               # Express server & API routes (199 lines)
+│   ├── models/
+│   │   └── Task.js             # Mongoose Task schema (49 lines)
+│   ├── public/                 # Production assets served statically
+│   │   ├── index.html          # Base DOM markup (153 lines)
+│   │   ├── style.css           # Styling & design system tokens (904 lines)
+│   │   └── app.js              # Application logic & drag-and-drop (624 lines)
+│   ├── package.json            # NPM dependencies & scripts
+│   ├── .env.example            # Environment variables template
+│   └── .env                    # Connection string (gitignored)
+├── frontend/                   # Development frontend workspace
+│   ├── index.html
+│   ├── style.css
+│   └── app.js
+├── .gitignore
+├── README.md                   # Repository setup documentation
+└── content.md                  # Comprehensive project report
+</pre>
+<p><strong>Codebase Volume:</strong></p>
+<ul>
+  <li>Frontend Code: ~1,850 lines (HTML: 194 | CSS: 1,146 | JavaScript: 734)</li>
+  <li>Backend Code: ~248 lines (Server: 199 | Mongoose Model: 49)</li>
+  <li><strong>Total Hand-Written Implementation: ~2,098 lines</strong></li>
+</ul>
+
+<h2>15. Agile Execution Timeline</h2>
+
+<h3>Sprint 1 (Week 1): Foundation &amp; Setup</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 20%;">Timeline</th>
+      <th style="width: 80%;">Key Engineering Activities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Day 1</td><td>Backlog creation, user story definitions, sprint planning</td></tr>
+    <tr><td>Day 2</td><td>MongoDB Atlas setup, Mongoose schema creation, Task model validation</td></tr>
+    <tr><td>Day 3</td><td>Built and tested GET /tasks and POST /tasks endpoints with validation</td></tr>
+    <tr><td>Day 4</td><td>Scaffolded HTML skeleton, CSS token variables, responsive board layout</td></tr>
+    <tr><td>Day 5</td><td>Created task modal, toast system, and skeleton placeholders</td></tr>
+    <tr><td>Review</td><td>Delivered working database, verified API routes, and task creation UI</td></tr>
+    <tr><td>Retro</td><td>Identified need for optimistic UI updates during drag-and-drop</td></tr>
+  </tbody>
+</table>
+
+<h3>Sprint 2 (Week 2): Integration &amp; Delivery</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="width: 20%;">Timeline</th>
+      <th style="width: 80%;">Key Engineering Activities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Day 1</td><td>Implemented PATCH /tasks/:id and DELETE /tasks/:id endpoints</td></tr>
+    <tr><td>Day 2</td><td>Integrated frontend API helpers, column navigation buttons, delete modal</td></tr>
+    <tr><td>Day 3</td><td>Built HTML5 drag-and-drop and debounced progress sliders</td></tr>
+    <tr><td>Day 4</td><td>Added polling sync, visitor name modal, avatars, sprint progress bar</td></tr>
+    <tr><td>Day 5</td><td>Completed Table view, Dark mode, responsive design, and Render deployment</td></tr>
+    <tr><td>Review</td><td>Full-stack application verified end-to-end on live cloud environment</td></tr>
+    <tr><td>Retro</td><td>Documented lessons learned and outlined roadmap for future enhancements</td></tr>
+  </tbody>
+</table>
+
+<h2>16. Deployment Configuration</h2>
+<p><strong>Cloud Hosting Platform:</strong> Render.com (Web Service, Node runtime)</p>
+<ul>
+  <li><strong>Build Command:</strong> <code>npm install</code></li>
+  <li><strong>Start Command:</strong> <code>node server.js</code></li>
+  <li><strong>Database:</strong> MongoDB Atlas (Free Tier M0 cluster, network access configured to allow Render IPs)</li>
+  <li><strong>Production URL:</strong> https://trello-1-848v.onrender.com</li>
+</ul>
+<div class="note">
+  <strong>Note on Free Tier Wake-up Time:</strong> Render free-tier instances sleep after 15 minutes of inactivity. The initial HTTP request may take 30–50 seconds while the container spins up.
+</div>
+
+<h2>17. Future Improvements</h2>
+<ul>
+  <li><strong>Authentication &amp; Security:</strong> Add user registration/login via JWT and role-based permissions.</li>
+  <li><strong>Task Assignment:</strong> Assign tasks to specific team members with assignee-based filters.</li>
+  <li><strong>Search &amp; Filtering:</strong> Real-time text search, status filters, and date sorting.</li>
+  <li><strong>In-place Card Editing:</strong> Inline title and description editing without opening modals.</li>
+  <li><strong>Intra-column Reordering:</strong> Drag-and-drop priority sorting within the same column.</li>
+  <li><strong>WebSocket Integration:</strong> Replace 5-second polling with Socket.io for instantaneous multi-user updates.</li>
+  <li><strong>File Attachments:</strong> Support image and document uploads to tasks via cloud storage.</li>
+</ul>
+
+<h2>18. Conclusion</h2>
+<p>
+  Mini-Trello demonstrates a complete full-stack Kanban board application built with modern web technologies. The project successfully implements core task management features — create, view, move, delete, and track progress — through a clean RESTful API architecture. Additional features include a Board/Table view toggle for switching between Kanban and numbered list views, and a Dark/Light mode toggle with <code>localStorage</code> persistence. The Vanilla JavaScript frontend with a custom glassmorphism design system proves that premium UI experiences are achievable without heavy frameworks. The project was developed following Agile/Scrum methodology across two one-week sprints, delivering a production-ready application deployed on Render.com with a MongoDB Atlas database.
+</p>
+
+<div class="signature-section">
+  <p><strong>Prepared by:</strong> Harshilkumar</p>
+  <p><strong>Enrollment:</strong> (fill your enrollment number)</p>
+  <p><strong>Semester:</strong> 7th Semester</p>
+  <p><strong>Date:</strong> September 2026</p>
+</div>
+
+</body>
+</html>

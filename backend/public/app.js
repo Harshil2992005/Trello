@@ -14,7 +14,9 @@ const saveTaskBtn = document.getElementById("saveTaskBtn");
 const taskForm = document.getElementById("taskForm");
 const taskTitle = document.getElementById("taskTitle");
 const taskDescription = document.getElementById("taskDescription");
+const taskCreatedBy = document.getElementById("taskCreatedBy");
 const titleError = document.getElementById("titleError");
+const createdByError = document.getElementById("createdByError");
 
 const deleteModal = document.getElementById("deleteModal");
 const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
@@ -188,8 +190,17 @@ function closeModal(modal) {
 addTaskBtn.addEventListener("click", function () {
   clearValidation();
   taskForm.reset();
+  // pre-fill name from localStorage
+  var savedName = getUserName() || "";
+  taskCreatedBy.value = savedName;
   openModal(taskModal);
-  setTimeout(function () { taskTitle.focus(); }, 100);
+  setTimeout(function () {
+    if (savedName) {
+      taskTitle.focus();
+    } else {
+      taskCreatedBy.focus();
+    }
+  }, 100);
 });
 
 // Close create-task modal
@@ -217,6 +228,9 @@ function clearValidation() {
   taskTitle.classList.remove("input-error");
   titleError.textContent = "";
   titleError.classList.remove("visible");
+  taskCreatedBy.classList.remove("input-error");
+  createdByError.textContent = "";
+  createdByError.classList.remove("visible");
 }
 
 taskTitle.addEventListener("input", function () {
@@ -225,9 +239,26 @@ taskTitle.addEventListener("input", function () {
   }
 });
 
+taskCreatedBy.addEventListener("input", function () {
+  if (taskCreatedBy.value.trim() !== "") {
+    taskCreatedBy.classList.remove("input-error");
+    createdByError.textContent = "";
+    createdByError.classList.remove("visible");
+  }
+});
+
 // ---------- POST /tasks : create a new task ----------
 taskForm.addEventListener("submit", async function (e) {
   e.preventDefault();
+
+  var nameVal = taskCreatedBy.value.trim();
+  if (nameVal === "") {
+    createdByError.textContent = "Name is required";
+    createdByError.classList.add("visible");
+    taskCreatedBy.classList.add("input-error");
+    taskCreatedBy.focus();
+    return;
+  }
 
   if (taskTitle.value.trim() === "") {
     titleError.textContent = "Title is required";
@@ -239,6 +270,9 @@ taskForm.addEventListener("submit", async function (e) {
 
   clearValidation();
 
+  // save name to localStorage for next time
+  localStorage.setItem("mtUserName", nameVal);
+
   try {
     await apiFetch(API + "/tasks", {
       method: "POST",
@@ -246,7 +280,7 @@ taskForm.addEventListener("submit", async function (e) {
       body: JSON.stringify({
         title: taskTitle.value,
         description: taskDescription.value,
-        createdBy: getUserName() || "Unknown"
+        createdBy: nameVal
       })
     });
 
