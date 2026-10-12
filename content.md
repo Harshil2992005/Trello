@@ -229,7 +229,7 @@ Content-Type: application/json
 {
   "title": "Design Database Schema",
   "description": "Create ER diagram for the task tables.",
-  "createdBy": "Harshil"
+  "createdBy": "John Doe"
 }
 ```
 
@@ -241,7 +241,7 @@ Content-Type: application/json
   "description": "Create ER diagram for the task tables.",
   "status": "todo",
   "progress": 0,
-  "createdBy": "Harshil",
+  "createdBy": "John Doe",
   "createdAt": "2026-09-01T10:30:00.000Z",
   "updatedAt": "2026-09-01T10:30:00.000Z"
 }
